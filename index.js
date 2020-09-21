@@ -6,13 +6,22 @@ require('./models/Product');
 
 const app = express();
 
-mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
-mongoose.connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_HOST}/${process.env.MONGO_DB_NAME}`,
-    { useNewUrlParser: true },
-);
-// mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost:27017/allmoxytest`);
+// mongoose.connect(
+//     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_HOST}/${process.env.MONGO_DB_NAME}`,
+//     { useNewUrlParser: true },
+// );
+// mongoose.connect(process.env.MONGODB_URI || `mongodb+serv://admin:19vilka76@cluster0-4mcts.mongodb.net/todo`);
+mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost:27017/allmoxytest`);
+
+mongoose.connection.on('error', () => {
+    throw new Error('Unable to connect to database');
+});
+
+// When the connection is disconnected
+mongoose.connection.on('disconnected', () => {
+    console.log('Mongoose default connection disconnected');
+});
 
 app.use(bodyParser.json());
 //IMPORT ROUTES
