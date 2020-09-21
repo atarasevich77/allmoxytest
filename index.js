@@ -11,7 +11,6 @@ mongoose.set('useCreateIndex', true);
 //     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_HOST}/${process.env.MONGO_DB_NAME}`,
 //     { useNewUrlParser: true },
 // );
-// mongoose.connect(process.env.MONGODB_URI || `mongodb+serv://admin:19vilka76@cluster0-4mcts.mongodb.net/todo`);
 mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost:27017/allmoxytest`);
 
 mongoose.connection.on('error', () => {
