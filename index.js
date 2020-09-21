@@ -6,23 +6,23 @@ require('./models/Product');
 
 const app = express();
 
-// mongoose.set('useCreateIndex', true);
-// mongoose.connect(
-//     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_HOST}/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`,
-//     { useNewUrlParser: true },
-// );
+mongoose.connect(
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_HOST}/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`,
+    { useNewUrlParser: true },
+);
+mongoose.set('useCreateIndex', true);
 // mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost:27017/allmoxytest`);
 
-const url = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_HOST}/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`;
-mongoose.set('useCreateIndex', true);
-mongoose.connect(url, {useNewUrlParser: true}, function(err, db) {
-    if(err) {
-        console.log(err);
-    } else {
-        console.log('connected to ' + url);
-        db.close();
-    }
-})
+// const url = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_HOST}/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`;
+// mongoose.set('useCreateIndex', true);
+// mongoose.connect(url, {useNewUrlParser: true}, function(err, db) {
+//     if(err) {
+//         console.log(err);
+//     } else {
+//         console.log('connected to ' + url);
+//         db.close();
+//     }
+// })
 
 app.use(bodyParser.json());
 //IMPORT ROUTES
