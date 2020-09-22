@@ -6,15 +6,16 @@ function App() {
 
     useEffect(() => {
         if (!products) {
-            getProducts();
+            productService.getAll()
+                .then(response => {
+                    console.log(response);
+                    setProducts(response);
+                })
+                .catch(error =>
+                    console.log(error)
+                )
         }
-    }, []);
-
-    const getProducts = async () => {
-        let res = await productService.getAll();
-        console.log(res);
-        setProducts(res);
-    }
+    });
 
     return (
         <div className="App">

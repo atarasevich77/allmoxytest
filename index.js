@@ -1,18 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+
 // IMPORT MODELS
 require('./models/Product');
 
 const app = express();
-
-const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_HOST}/${process.env.MONGO_DB_NAME}`;
-mongoose.connect(uri, { useNewUrlParser: true });
-mongoose.set('useCreateIndex', true);
-console.log(uri);
-// mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost:27017/allmoxytest`);
-
 app.use(bodyParser.json());
+
+dotenv.config();
+const connection = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_NODE_0},${process.env.MONGO_NODE_1},${process.env.MONGO_NODE_2}/${process.env.MONGO_DB_NAME}?ssl=true&authSource=admin&replicaSet=${process.env.MONGO_REPLICA_SET}&retryWrites=true&w=majority`;
+mongoose.connect(connection,{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+    .then(() => console.log('Database Connected Successfully'))
+    .catch(err => console.log(err));
+
 //IMPORT ROUTES
 require('./routes/productRoutes')(app);
 
