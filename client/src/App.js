@@ -1,76 +1,43 @@
-import React, {useState, useEffect} from "react";
-import productService from './services/productService';
+import React from "react";
+import CreateProduct from "./components/createProduct/CreateProduct";
+import {Container} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { makeStyles } from '@material-ui/core/styles';
+import ProductsTable from "./components/products/ProductsTable";
+import Footer from "./components/footer/Footer";
 
 function App() {
-    const [products, setProducts] = useState(null);
 
-    useEffect(() => {
-        productService.getAll()
-            .then(response => {
-                setProducts(response);
-            })
-            .catch(error =>
-                console.log(error)
-            )
-    }, []);
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+        },
+        main: {
+            marginTop: theme.spacing(8),
+            marginBottom: theme.spacing(2),
+        },
+    }));
+
+    const classes = useStyles();
 
     return (
-        <div className="container-fluid">
-            <table className="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {
-                    (products && products.length > 0) ?
-                        products.map((product, index) =>
-                            <tr key={product._id}>
-                                <th>
-                                    {++index}
-                                </th>
-                                <td>
-                                    {product.title}
-                                </td>
-                                <td>
-                                    {product.description}
-                                </td>
-                                <td>
-                                    {product.price}
-                                </td>
-                                <td>
-                                    {product.quantity}
-                                </td>
-                                <td>
-                                    {product.image}
-                                </td>
-                                <td>
-                                    <button type="button" className="btn btn-primary">Edit</button>
-                                </td>
-                                <td>
-                                    <button type="button" className="btn btn-primary">Delete</button>
-                                </td>
-                            </tr>
-                        )
-                        :
-                        <tr>
-                            <td colSpan="8" className="d-flex justify-content-center">
-                                <div className="spinner-border" role="status">
-                                    <span className="sr-only">Loading...</span>
-                                </div>
-                            </td>
-                        </tr>
-                }
-                </tbody>
-            </table>
+        <div className={classes.root}>
+            <CssBaseline />
+            <Container component="main" className={classes.main} maxWidth="sm">
+                <Typography variant="h2" component="h1" gutterBottom>
+                    Products
+                </Typography>
+                <Typography variant="h5" component="h2" gutterBottom>
+                    <CreateProduct />
+                </Typography>
+                <Typography variant="body1">
+                    <ProductsTable />
+                </Typography>
+            </Container>
+            <Footer />
         </div>
     );
 }
