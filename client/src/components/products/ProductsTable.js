@@ -1,18 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import productService from '../../services/productService';
 
-const ProductsTable = () => {
-    const [products, setProducts] = useState(null);
+const ProductsTable = (props) => {
+    const products = props.products;
 
-    useEffect(() => {
-        productService.getAll()
-            .then(response => {
-                setProducts(response);
-            })
-            .catch(error =>
-                console.log(error)
-            )
-    }, []);
+    const onDeleteHandle = (id) => {
+        props.deleteProduct(id);
+    }
 
     return (
         <table className="table table-hover">
@@ -55,7 +48,7 @@ const ProductsTable = () => {
                                 <button type="button" className="btn btn-primary">Edit</button>
                             </td>
                             <td>
-                                <button type="button" className="btn btn-primary">Delete</button>
+                                <button type="button" className="btn btn-primary" onClick={() => onDeleteHandle(product._id)}>Delete</button>
                             </td>
                         </tr>
                     )

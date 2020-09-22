@@ -1,13 +1,12 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import CreateProduct from "./components/createProduct/CreateProduct";
-import {Container} from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import ProductsTable from "./components/products/ProductsTable";
 import Footer from "./components/footer/Footer";
+import productService from "./services/productService";
 
 function App() {
+    const [products, setProducts] = useState(null);
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -16,27 +15,60 @@ function App() {
             minHeight: '100vh',
         },
         main: {
-            marginTop: theme.spacing(8),
+            marginTop: theme.spacing(4),
             marginBottom: theme.spacing(2),
         },
     }));
-
     const classes = useStyles();
+
+    const getAllProducts = () => {
+        productService.getAll()
+            .then(response => {
+                setProducts(response);
+            })
+            .catch(error =>
+                console.log(error)
+            )
+    }
+
+    const addProduct = (product) => {
+        productService.createProduct(product)
+            .then(() => {
+                getAllProducts()
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    const deleteProduct = (id) => {
+        productService.deleteProduct(id)
+            .then(() => {
+                getAllProducts()
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    useEffect(() => {
+        getAllProducts();
+    }, []);
 
     return (
         <div className={classes.root}>
-            <CssBaseline />
-            <Container component="main" className={classes.main} maxWidth="sm">
-                <Typography variant="h2" component="h1" gutterBottom>
-                    Products
-                </Typography>
-                <Typography variant="h5" component="h2" gutterBottom>
-                    <CreateProduct />
-                </Typography>
-                <Typography variant="body1">
-                    <ProductsTable />
-                </Typography>
-            </Container>
+            <div className="container-fluid w-75">
+                <div className="row p-2">
+                    <h3>Products</h3>
+                </div>
+                <div className="row">
+                    <ProductsTable
+                        products={products}
+                        deleteProduct={deleteProduct}
+                    />
+                    <CreateProduct addProduct={addProduct}/>
+                </div>
+            </div>
             <Footer />
         </div>
     );
