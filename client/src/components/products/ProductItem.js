@@ -4,6 +4,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import CancelIcon from "@material-ui/icons/Cancel";
 import SaveIcon from "@material-ui/icons/Save";
 import green from "@material-ui/core/colors/green";
+import ImageUploading from 'react-images-uploading';
 
 const ProductItem = (props) => {
     const product = props.product;
@@ -13,7 +14,13 @@ const ProductItem = (props) => {
     const [description, setDescription] = useState(product.description);
     const [price, setPrice] = useState(product.price);
     const [quantity, setQuantity] = useState(product.quantity);
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState({});
+    const [fileName, setFileName] = useState('choose image');
+
+    const handleFileUpload = (imageList) => {
+        setImage(imageList[0]);
+        setFileName(imageList[0]['file'].name);
+    }
 
     const onDeleteHandle = (id) => {
         props.deleteProduct(id);
@@ -22,7 +29,7 @@ const ProductItem = (props) => {
     const onEditHandle = () => {
         const newItem = {...product, title: title, description: description, price: price, quantity: quantity, image: image};
         props.editProduct(newItem);
-        setEditMode(false);
+        handleCancel();
     }
 
     const handleCancel = () => {
@@ -31,12 +38,8 @@ const ProductItem = (props) => {
         setPrice(product.price);
         setQuantity(product.quantity);
         setImage(product.image);
+        setFileName('choose image');
         setEditMode(false);
-    }
-
-    const styleImg = {
-        width: '100',
-        height: '100'
     }
 
     return (
@@ -64,9 +67,18 @@ const ProductItem = (props) => {
                     </td>
                     <td>
                         <div className="custom-file">
-                            <input type="file" className="custom-file-input" value={image}
-                                   onChange={(e) => setImage(e.target.files[0])}/>
-                            <label className="custom-file-label">File...</label>
+
+                            <ImageUploading value={image} onChange={handleFileUpload} dataURLKey="data_url">
+                                {({onImageUpload}) => (
+                                    <>
+                                        <div className="upload__image-wrapper">
+                                            <button onClick={onImageUpload}>
+                                                <label className="custom-file-label">{fileName}</label>
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
+                            </ImageUploading>
                         </div>
                     </td>
                     <td>

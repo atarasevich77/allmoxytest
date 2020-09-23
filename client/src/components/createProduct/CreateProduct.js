@@ -73,7 +73,6 @@ const CreateProduct = (props) => {
                     <div className="d-flex pt-2">
                         <div className="input-group">
                             <div className="custom-file">
-
                                 <ImageUploading value={image} onChange={handleFileUpload} dataURLKey="data_url">
                                     {({onImageUpload}) => (
                                         <>
