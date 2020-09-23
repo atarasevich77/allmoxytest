@@ -15,7 +15,7 @@ const ProductItem = (props) => {
     const [description, setDescription] = useState(product.description);
     const [price, setPrice] = useState(product.price);
     const [quantity, setQuantity] = useState(product.quantity);
-    const [image, setImage] = useState(product.image);
+    const [image, setImage] = useState(('image' in product) ? product.image : {});
     const [fileName, setFileName] = useState('choose image');
 
     const handleFileUpload = (imageList) => {
@@ -38,7 +38,7 @@ const ProductItem = (props) => {
         setDescription(product.description);
         setPrice(product.price);
         setQuantity(product.quantity);
-        setImage(product.image);
+        setImage(('image' in product) ? product.image : {});
         setEditMode(false);
     }
 
