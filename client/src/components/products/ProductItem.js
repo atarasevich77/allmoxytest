@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -7,6 +7,7 @@ import green from "@material-ui/core/colors/green";
 import ImageUploading from 'react-images-uploading';
 
 const ProductItem = (props) => {
+    const myRef = useRef();
     const { product } = props;
     const [editMode, setEditMode] = useState(false);
 
@@ -36,8 +37,20 @@ const ProductItem = (props) => {
         setEditMode(false);
     }
 
+    /**Click outside the row*/
+    const handleClickOutside = e => {
+        if (!myRef.current.contains(e.target)) {
+            handleCancel();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    });
+
     return (
-        <tr>
+        <tr ref={myRef} >
             {editMode ?
                 <>
                     <td>
