@@ -41,7 +41,6 @@ const ProductsTable = (props) => {
         <table className="table table-hover">
             <thead>
             <tr>
-                <th scope="col"><button className="btn btn-light btn-sm" disabled={true}>#</button></th>
                 <th scope="col">
                     <button className="btn btn-light btn-sm" onClick={() => requestSort('title')}>Title</button>
                 </th>
@@ -63,7 +62,6 @@ const ProductsTable = (props) => {
             {
                 items.map((product, index) =>
                     <ProductItem key={product._id}
-                                 index={++index}
                                  product={product}
                                  deleteProduct={props.deleteProduct}
                                  editProduct={props.editProduct}
