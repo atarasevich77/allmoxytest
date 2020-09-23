@@ -1,42 +1,67 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import ProductItem from "./ProductItem";
 
+const useSortableData = (items, config = null) => {
+    const [sortConfig, setSortConfig] = useState(config);
+
+    const sortedItems = useMemo(() => {
+        let sortableItems = [...items];
+        if (sortConfig !== null) {
+            sortableItems.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === 'asc' ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === 'asc' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return sortableItems;
+    }, [items, sortConfig]);
+
+    const requestSort = (key) => {
+        let direction = 'asc';
+        if (
+            sortConfig &&
+            sortConfig.key === key &&
+            sortConfig.direction === 'asc'
+        ) {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    return { items: sortedItems, requestSort };
+};
+
 const ProductsTable = (props) => {
-    const {products} = props;
-    const [sortedField, setSortedField] = useState(null);
-
-    let sortedProducts = [...products];
-    if (sortedField !== null) {
-        sortedProducts.sort((a, b) => {
-            if (a[sortedField] < b[sortedField]) {
-                return -1;
-            }
-            if (a[sortedField] > b[sortedField]) {
-                return 1;
-            }
-            return 0;
-        });
-    }
-
+    const { items, requestSort } = useSortableData(props.products);
     return (
         <table className="table table-hover">
             <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col"><button className="btn btn-light btn-sm" disabled={true}>#</button></th>
                 <th scope="col">
-                    <span onClick={() => setSortedField('title')}>Title</span>
+                    <button className="btn btn-light btn-sm" onClick={() => requestSort('title')}>Title</button>
                 </th>
-                <th scope="col">Description</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Image</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
+                <th scope="col">
+                    <button className="btn btn-light btn-sm" onClick={() => requestSort('description')}>Description</button>
+                </th>
+                <th scope="col">
+                    <button className="btn btn-light btn-sm" onClick={() => requestSort('price')}>Price</button>
+                </th>
+                <th scope="col">
+                    <button className="btn btn-light btn-sm" onClick={() => requestSort('quantity')}>Quantity</button>
+                </th>
+                <th scope="col"><button className="btn btn-light btn-sm" disabled={true}>Image</button></th>
+                <th scope="col"><button className="btn btn-light btn-sm" disabled={true}>Edit</button></th>
+                <th scope="col"><button className="btn btn-light btn-sm" disabled={true}>Delete</button></th>
             </tr>
             </thead>
             <tbody>
             {
-                products.map((product, index) =>
+                items.map((product, index) =>
                     <ProductItem key={product._id}
                                  index={++index}
                                  product={product}
