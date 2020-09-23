@@ -33,12 +33,6 @@ const ProductItem = (props) => {
     }
 
     const handleCancel = () => {
-        setTitle(product.title);
-        setDescription(product.description);
-        setPrice(product.price);
-        setQuantity(product.quantity);
-        setImage(product.image);
-        setFileName('choose image');
         setEditMode(false);
     }
 
