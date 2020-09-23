@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import CreateProduct from "./components/createProduct/CreateProduct";
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import ProductsTable from "./components/products/ProductsTable";
 import Footer from "./components/footer/Footer";
 import productService from "./services/productService";
@@ -71,16 +71,24 @@ function App() {
                 <div className="row p-2">
                     <h3>Products</h3>
                 </div>
-                <div className="row">
-                    <ProductsTable
-                        products={products}
-                        editProduct={editProduct}
-                        deleteProduct={deleteProduct}
-                    />
-                    <CreateProduct addProduct={addProduct}/>
-                </div>
+                {(products && products.length > 0) ?
+                    <div className="row">
+                        <ProductsTable
+                            products={products}
+                            editProduct={editProduct}
+                            deleteProduct={deleteProduct}
+                        />
+                        <CreateProduct addProduct={addProduct}/>
+                    </div>
+                    :
+                    <div className="d-flex justify-content-center">
+                        <div className="spinner-border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                }
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 }

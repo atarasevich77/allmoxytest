@@ -1,15 +1,31 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ProductItem from "./ProductItem";
 
 const ProductsTable = (props) => {
-    const products = props.products;
+    const {products} = props;
+    const [sortedField, setSortedField] = useState(null);
+
+    let sortedProducts = [...products];
+    if (sortedField !== null) {
+        sortedProducts.sort((a, b) => {
+            if (a[sortedField] < b[sortedField]) {
+                return -1;
+            }
+            if (a[sortedField] > b[sortedField]) {
+                return 1;
+            }
+            return 0;
+        });
+    }
 
     return (
         <table className="table table-hover">
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Title</th>
+                <th scope="col">
+                    <span onClick={() => setSortedField('title')}>Title</span>
+                </th>
                 <th scope="col">Description</th>
                 <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
@@ -20,23 +36,14 @@ const ProductsTable = (props) => {
             </thead>
             <tbody>
             {
-                (products && products.length > 0) ?
-                    products.map((product, index) =>
-                        <ProductItem key={product._id}
-                                     index={++index}
-                                     product={product}
-                                     deleteProduct={props.deleteProduct}
-                                     editProduct={props.editProduct}
-                        />
-                    )
-                    :
-                    <tr>
-                        <td colSpan="8" className="d-flex justify-content-center">
-                            <div className="spinner-border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </div>
-                        </td>
-                    </tr>
+                products.map((product, index) =>
+                    <ProductItem key={product._id}
+                                 index={++index}
+                                 product={product}
+                                 deleteProduct={props.deleteProduct}
+                                 editProduct={props.editProduct}
+                    />
+                )
             }
             </tbody>
         </table>

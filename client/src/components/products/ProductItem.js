@@ -7,7 +7,7 @@ import green from "@material-ui/core/colors/green";
 import ImageUploading from 'react-images-uploading';
 
 const ProductItem = (props) => {
-    const product = props.product;
+    const { product, index } = props;
     const [editMode, setEditMode] = useState(false);
 
     const [title, setTitle] = useState(product.title);
@@ -45,7 +45,7 @@ const ProductItem = (props) => {
     return (
         <tr>
             <th>
-                {props.index}
+                {index}
             </th>
             {editMode ?
                 <>
