@@ -29,7 +29,7 @@ const CreateProduct = (props) => {
 
     return (
         <>
-            <Fab size="small" color="primary" aria-label="add">
+            <Fab size="small" color="primary" aria-label="add" className="ml-auto mb-4 mr-2">
                 <AddIcon onClick={() => setShowForm(true)}/>
             </Fab>
             <Modal show={showModal} onHide={handleCloseModal}>
@@ -50,7 +50,7 @@ const CreateProduct = (props) => {
                                 <textarea className="md-textarea form-control"
                                           rows="3"
                                           onChange={(e) => setProduct({...product, description: e.target.value})}
-                                          placeholder="Describe your product"
+                                          placeholder="Describe a product"
                                 />
                         </div>
                     </div>

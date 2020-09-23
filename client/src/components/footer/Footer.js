@@ -10,9 +10,10 @@ const Footer = () => {
         return (
             <Typography variant="body2" color="textSecondary">
                 {'Copyright © '}
-                <Link color="inherit" href="https://github.com/kano-kenji/allmoxytest">
-                    Github repository of allmoxytest project by Alexander Tarasevich
-                </Link>{' '}
+                <Link color="inherit" href="https://github.com/kano-kenji/allmoxytest" target="blank">Github</Link>
+                {' '}repository of{' '}
+                <Link color="inherit" href="https://allmoxytest.herokuapp.com" target="blank">Allmoxytest</Link>
+                {' '}project by Alexander Tarasevich{' '}
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>
