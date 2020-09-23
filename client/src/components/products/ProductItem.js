@@ -44,9 +44,9 @@ const ProductItem = (props) => {
 
     return (
         <tr>
-            <th>
+            <td>
                 {index}
-            </th>
+            </td>
             {editMode ?
                 <>
                     <td>
