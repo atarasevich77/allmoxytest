@@ -2,14 +2,23 @@ import React, {useState} from 'react';
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import {Button, Modal} from "react-bootstrap";
-import productService from "../../services/productService";
+import ImageUploading from 'react-images-uploading';
 
 const CreateProduct = (props) => {
     const [showModal, setShowForm] = useState(false);
     const [product, setProduct] = useState({});
+    const [image, setImage] = useState({});
+    const [fileName, setFileName] = useState('Choose image');
+
+    const handleFileUpload = (imageList) => {
+        setImage(imageList);
+        setFileName(imageList[0]['file'].name);
+        setProduct({...product, image: imageList[0]});
+    }
 
     const handleCloseModal = () => {
         setProduct({});
+        setFileName('Choose image');
         setShowForm(false);
     }
 
@@ -20,7 +29,7 @@ const CreateProduct = (props) => {
 
     return (
         <>
-            <Fab color="primary" aria-label="add">
+            <Fab size="small" color="primary" aria-label="add">
                 <AddIcon onClick={() => setShowForm(true)}/>
             </Fab>
             <Modal show={showModal} onHide={handleCloseModal}>
@@ -29,13 +38,11 @@ const CreateProduct = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="d-flex">
-                        <div className="row">
-                            <div className="col">
-                                <input type="text"
-                                    className="form-control"
-                                    onChange={(e) => setProduct({...product, title: e.target.value})}
-                                    placeholder="Title"/>
-                            </div>
+                        <div className="input-group">
+                            <input type="text"
+                                   className="form-control"
+                                   onChange={(e) => setProduct({...product, title: e.target.value})}
+                                   placeholder="Title"/>
                         </div>
                     </div>
                     <div className="d-flex pt-2">
@@ -65,12 +72,19 @@ const CreateProduct = (props) => {
                     </div>
                     <div className="d-flex pt-2">
                         <div className="input-group">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text">Upload</span>
-                            </div>
                             <div className="custom-file">
-                                <input type="file" className="custom-file-input" />
-                                <label className="custom-file-label">Choose file</label>
+
+                                <ImageUploading value={image} onChange={handleFileUpload} dataURLKey="data_url">
+                                    {({onImageUpload}) => (
+                                        <>
+                                            <div className="upload__image-wrapper">
+                                                <button onClick={onImageUpload}>
+                                                    <label className="custom-file-label">{fileName}</label>
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
+                                </ImageUploading>
                             </div>
                         </div>
                     </div>

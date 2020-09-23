@@ -41,6 +41,16 @@ function App() {
             })
     }
 
+    const editProduct = (product) => {
+        productService.editProduct(product)
+            .then(() => {
+                getAllProducts()
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     const deleteProduct = (id) => {
         productService.deleteProduct(id)
             .then(() => {
@@ -64,6 +74,7 @@ function App() {
                 <div className="row">
                     <ProductsTable
                         products={products}
+                        editProduct={editProduct}
                         deleteProduct={deleteProduct}
                     />
                     <CreateProduct addProduct={addProduct}/>

@@ -1,11 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
+import ProductItem from "./ProductItem";
 
 const ProductsTable = (props) => {
     const products = props.products;
-
-    const onDeleteHandle = (id) => {
-        props.deleteProduct(id);
-    }
 
     return (
         <table className="table table-hover">
@@ -25,32 +22,12 @@ const ProductsTable = (props) => {
             {
                 (products && products.length > 0) ?
                     products.map((product, index) =>
-                        <tr key={product._id}>
-                            <th>
-                                {++index}
-                            </th>
-                            <td>
-                                {product.title}
-                            </td>
-                            <td>
-                                {product.description}
-                            </td>
-                            <td>
-                                {product.price}
-                            </td>
-                            <td>
-                                {product.quantity}
-                            </td>
-                            <td>
-                                {product.image}
-                            </td>
-                            <td>
-                                <button type="button" className="btn btn-primary">Edit</button>
-                            </td>
-                            <td>
-                                <button type="button" className="btn btn-primary" onClick={() => onDeleteHandle(product._id)}>Delete</button>
-                            </td>
-                        </tr>
+                        <ProductItem key={product._id}
+                                     index={++index}
+                                     product={product}
+                                     deleteProduct={props.deleteProduct}
+                                     editProduct={props.editProduct}
+                        />
                     )
                     :
                     <tr>
